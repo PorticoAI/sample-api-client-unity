@@ -15,14 +15,19 @@ public class UIBinding : MonoBehaviour
   public Text Recognition;
   public Text Response;
   public Text MicrophoneButton;
+  public Text WSStatus;
   public TextAsset ResponseFile;
 
+  public StreamingMicrophone Mic;
+
   Queue<RealTimePredictionResult> m_streamingResults;
+  Queue<string> m_wsMessage;
   IntentResponses m_responses;
 
   void Start()
   {
     m_streamingResults = new Queue<RealTimePredictionResult>();
+    m_wsMessage = new Queue<string>();
 
     LoadResponses();
   }
@@ -98,14 +103,33 @@ public class UIBinding : MonoBehaviour
     IntentResults.text = response;
   }
 
+  public void OnWSConnected()
+  {
+    m_wsMessage.Enqueue("WSConnected");
+  }
+
+  public void OnWSDisconnected()
+  {
+    m_wsMessage.Enqueue("WSDisconnected");
+  }
+
+  public void OnWSError(string error)
+  {
+    m_wsMessage.Enqueue("WSError: " + error);
+  }
+
   public void OnStreamingStarted()
   {
-    MicrophoneButton.text = "Stop\nMicrophone";
+    if(MicrophoneButton != null)
+      MicrophoneButton.text = "Stop\nMicrophone";
+    m_wsMessage.Enqueue("Streaming");
   }
 
   public void OnStreamingStopped()
   {
-    MicrophoneButton.text = "Start\nMicrophone";
+    if (MicrophoneButton != null)
+      MicrophoneButton.text = "Start\nMicrophone";
+    m_wsMessage.Enqueue("Waiting");
   }
 
   void Update()
@@ -113,6 +137,11 @@ public class UIBinding : MonoBehaviour
     if (m_streamingResults.Count > 0)
     {
       OnRealtimeResult(m_streamingResults.Dequeue());
+    }
+
+    if(m_wsMessage.Count > 0)
+    {
+      WSStatus.text = m_wsMessage.Dequeue();
     }
   }
 }

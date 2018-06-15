@@ -7,6 +7,9 @@ public class StreamingMicrophone : MonoBehaviour
   public PorticoConversation Conversation;
   public UIBinding UIBinding;
   public AudioSource TestSource;
+  public bool MicrophoneAutoToggle = false;
+  public float NoiseThreshold = 0.2f;
+  public float QuietTime = 0.5f;
   
   const float ChunkTime = 0.1f;
   AudioClip m_recording;
@@ -14,6 +17,8 @@ public class StreamingMicrophone : MonoBehaviour
   float m_threshold;
   List<byte> m_buffer;
   float m_timer;
+  float m_quietTimer;
+  public float m_noiseLevel;
 
   void Start()
   {
@@ -24,6 +29,9 @@ public class StreamingMicrophone : MonoBehaviour
     }
 
     m_buffer = new List<byte>();
+
+    if (MicrophoneAutoToggle)
+      ToggleMicrophone();
   }
 
   public void ToggleMicrophone()
@@ -68,11 +76,17 @@ public class StreamingMicrophone : MonoBehaviour
       float[] samples = new float[diff * m_recording.channels];
 
       m_recording.GetData(samples, m_lastSample);
+      var noiseTotal = 0.0f;
       for(int i = 0; i < samples.Length; i++)
       {
-        var sample = samples[i];
-        samples[i] = samples[i];
+        noiseTotal += Mathf.Abs(samples[i]);
       }
+
+      var noiseAvg = noiseTotal / samples.Length;
+
+      // Smooth the noise level to ignore pops.
+      m_noiseLevel = noiseAvg * 0.1f + m_noiseLevel * 0.9f;
+      
       OnSamples(samples);
     }
 
@@ -88,6 +102,28 @@ public class StreamingMicrophone : MonoBehaviour
       Conversation.OnPredictSamples(m_buffer.ToArray());
       m_timer = 0.0f;
       m_buffer.Clear();
+    }
+
+    if(m_noiseLevel > NoiseThreshold)
+    {
+      m_quietTimer = 0.0f;
+
+      if (MicrophoneAutoToggle)
+        Conversation.StartStreaming();
+    }
+    else
+    {
+      m_quietTimer += Time.deltaTime;
+    }
+
+    if (m_quietTimer > QuietTime)
+    {
+      m_quietTimer = 0.0f;
+
+      if (MicrophoneAutoToggle)
+      {
+        Conversation.StopStreaming();
+      }
     }
   }
 

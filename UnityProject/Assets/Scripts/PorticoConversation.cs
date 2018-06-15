@@ -15,18 +15,31 @@ public class PorticoConversation : MonoBehaviour
   public TextAsset TrainingFile;
   public UIBinding UIBinding;
 
+  enum STT_State
+  {
+    Disconnected,
+    Started,
+    Stopped,
+  }
+
+
   WebSocket m_ws;
   string API_BASE = "dev-train.porticotraining.com/api";
   Dictionary<string, string> m_headers;
   IntentResponses m_responses;
+  STT_State m_sttState;
 
   void Start()
   {
     m_headers = new Dictionary<string, string>();
     m_headers["Authorization"] = string.Format("Bearer {0}", MY_TOKEN);
-    m_headers["Content-Type"] = "application/json";    
-    
+    m_headers["Content-Type"] = "application/json";
+    m_sttState = STT_State.Disconnected;
+
+
     UIBinding.OnModelName(MODEL_NAME);
+
+    ConnectToStreamingServer();
   }
   
   public void StartCreateModel()
@@ -149,6 +162,8 @@ public class PorticoConversation : MonoBehaviour
     m_ws.OnOpen += (sender, e) =>
     {
       Debug.Log("WebSocket connected");
+      m_sttState = STT_State.Stopped;
+      UIBinding.OnWSConnected();
     };
 
     m_ws.OnMessage += (sender, e) => {
@@ -159,11 +174,13 @@ public class PorticoConversation : MonoBehaviour
     m_ws.OnError += (sender, e) =>
     {
       Debug.LogErrorFormat("WebSocket Error {0}", e.Message);
+      UIBinding.OnWSError(e.Message);
     };
 
     m_ws.OnClose += (sender, e) =>
     {
       Debug.Log("WebSocket Closed");
+      UIBinding.OnWSDisconnected();
     };
 
     m_ws.Connect();
@@ -173,30 +190,45 @@ public class PorticoConversation : MonoBehaviour
   {
     if (m_ws == null)
     {
-      Debug.LogError("Stream not connected.");
+      Debug.Log("Stream not connected.");
       return;
     }
+
+    if (m_sttState == STT_State.Started)
+      return;
 
     var startMsg = new StartStreamingPayload(44100);
     var msg = JsonUtility.ToJson(startMsg);
     m_ws.Send(msg);
+
+    m_sttState = STT_State.Started;
+
+    UIBinding.OnStreamingStarted();
   }
 
   public void StopStreaming()
   {
     if (m_ws == null)
     {
-      Debug.LogError("Stream not connected.");
+      Debug.Log("Stream not connected.");
       return;
     }
+
+    if (m_sttState == STT_State.Stopped)
+      return;
 
     var stopStreaming = new StopStreamingPayload();
     var msg = JsonUtility.ToJson(stopStreaming);
     m_ws.Send(msg);
+
+    m_sttState = STT_State.Stopped;
+
+    UIBinding.OnStreamingStopped();
   }
 
   public void OnPredictSamples(byte[] samples)
   {
-    m_ws.Send(samples);
+    if(m_sttState == STT_State.Started)
+      m_ws.Send(samples);
   }
 }
