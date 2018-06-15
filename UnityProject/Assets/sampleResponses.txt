@@ -1,0 +1,29 @@
+{
+	"intentResponses" :
+	[
+		{
+			"intent": "HowCanIHelp",
+			"response": "I need a ham sandwich."
+		},
+		{
+			"intent": "AskHowPersonIs",
+			"response": "I am doing well."
+		},
+		{
+			"intent": "GeneralGreeting",
+			"response": "Hello hello."
+		},
+		{
+			"intent": "AskForCreditCard",
+			"response": "Why do you want my credit card?"
+		},
+		{
+			"intent": "AskForId",
+			"response": "No. That is my business."
+		},
+		{
+			"intent": "AskName",
+			"response": "My name is Joe."
+		}
+	]
+}

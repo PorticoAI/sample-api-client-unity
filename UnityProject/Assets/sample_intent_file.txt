@@ -1,0 +1,69 @@
+label:HowCanIHelp How can I help you?
+label:HowCanIHelp How can I help you?
+label:HowCanIHelp How can I help you?
+label:HowCanIHelp How can I help you?
+label:HowCanIHelp How can I help you?
+label:HowCanIHelp How can I help you?
+label:HowCanIHelp Can I get you anything
+label:HowCanIHelp Can I get you anything else
+label:HowCanIHelp Something to get started
+label:HowCanIHelp What can I bring you?
+label:HowCanIHelp What do you want?
+label:HowCanIHelp What would you like?
+label:HowCanIHelp Is there anything I can assist you with?
+label:HowCanIHelp What can I get you?
+label:HowCanIHelp Can I get you started with something?
+label:HowCanIHelp May I know your order?
+label:HowCanIHelp I can help you right away
+label:HowCanIHelp I can help
+label:HowCanIHelp I can help you
+label:HowCanIHelp What can I get you started with?
+label:HowCanIHelp How can I help you?
+label:HowCanIHelp Is there something I can help with?
+label:HowCanIHelp I'd be more than happy to take your order and pass it on.
+label:HowCanIHelp I'm so sorry, is there something I can help you with?
+label:HowCanIHelp Perhaps I can help
+label:HowCanIHelp May I help you?
+label:HowCanIHelp Is there something I can do?
+label:HowCanIHelp What can I do for you?
+label:HowCanIHelp Is there something I can assist you with?
+label:HowCanIHelp How can I be of service?
+label:HowCanIHelp I can help you with that
+label:HowCanIHelp Is there anything else I can offer you?
+label:HowCanIHelp Is there anything I can help you with?
+label:HowCanIHelp Okay was there anything that I can help you with?
+label:AskHowPersonIs How are you today?
+label:AskHowPersonIs How are you?
+label:AskHowPersonIs What's up?
+label:AskHowPersonIs How's it going?
+label:AskHowPersonIs How's it going today?
+label:AskHowPersonIs How are you doing today?
+label:AskHowPersonIs How are you feeling today?
+label:AskHowPersonIs How's your morning been so far?
+label:AskHowPersonIs How's your day going so far
+label:GeneralGreeting Good afternoon
+label:GeneralGreeting Good morning
+label:GeneralGreeting Good morning, miss. 
+label:GeneralGreeting Good morning, maam. 
+label:GeneralGreeting Hello
+label:GeneralGreeting Hello there
+label:GeneralGreeting Hi 
+label:GeneralGreeting Hi Miss
+label:GeneralGreeting Hi Maam
+label:GeneralGreeting Hello Miss
+label:GeneralGreeting Hello Maam
+label:AskForCreditCard May I please have your credit card
+label:AskForCreditCard May I please have a credit card
+label:AskForCreditCard May I please have a credit card for room charges
+label:AskForCreditCard I need to keep a credit card on file here
+label:AskForId Can I please see your proof of identity?
+label:AskForId Can I please see a form of ID?
+label:AskForId Can I please see a form of ID please?
+label:AskForId For your safety and security, I need to see a form of Id
+label:AskForId I need to see a form of Id
+label:AskForId May I have your Id
+label:AskForId May I have some identification
+label:AskName What name can I look up the reservation?
+label:AskName Can I have your name please?
+label:AskName Can I have your name?
+label:AskName What's your name?
