@@ -1308,6 +1308,8 @@ MonoBehaviour:
   Response: {fileID: 144719449}
   MicrophoneButton: {fileID: 0}
   WSStatus: {fileID: 1689696264}
+  ConnectButton: {fileID: 0}
+  ConnectButtonText: {fileID: 0}
   ResponseFile: {fileID: 4900000, guid: 45e36c645a6b10e47963e9c37ecf8ff4, type: 3}
   Mic: {fileID: 1810861100}
 --- !u!4 &1430096173
@@ -1789,9 +1791,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 50ce79896e725a144a192fe845c073fb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  AutoConnect: 1
   MODEL_ID: 
   MODEL_NAME: MyTestModel
   MY_TOKEN: 
+  API_BASE: api.porticotraining.com
   TrainingFile: {fileID: 4900000, guid: 611fc13e1c90fb8428c155dd562810dd, type: 3}
   UIBinding: {fileID: 1430096172}
 --- !u!4 &1976859166

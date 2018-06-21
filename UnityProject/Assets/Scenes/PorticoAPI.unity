@@ -914,7 +914,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &288826242
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1871,7 +1871,7 @@ RectTransform:
   m_Father: {fileID: 288826242}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 0.9}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
@@ -3041,8 +3041,10 @@ MonoBehaviour:
   Response: {fileID: 144719449}
   MicrophoneButton: {fileID: 912670102}
   WSStatus: {fileID: 792778682}
+  ConnectButton: {fileID: 738477696}
+  ConnectButtonText: {fileID: 1466268376}
   ResponseFile: {fileID: 4900000, guid: 45e36c645a6b10e47963e9c37ecf8ff4, type: 3}
-  Mic: {fileID: 0}
+  Mic: {fileID: 1810861100}
 --- !u!4 &1430096173
 Transform:
   m_ObjectHideFlags: 0
@@ -4136,7 +4138,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1816777108
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4492,9 +4494,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 50ce79896e725a144a192fe845c073fb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  AutoConnect: 0
   MODEL_ID: 
   MODEL_NAME: MyTestModel
   MY_TOKEN: 
+  API_BASE: dev-train.porticotraining.com/api
   TrainingFile: {fileID: 4900000, guid: 611fc13e1c90fb8428c155dd562810dd, type: 3}
   UIBinding: {fileID: 1430096172}
 --- !u!4 &1976859166

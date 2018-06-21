@@ -16,9 +16,12 @@ public class UIBinding : MonoBehaviour
   public Text Response;
   public Text MicrophoneButton;
   public Text WSStatus;
+  public Button ConnectButton;
+  public Text ConnectButtonText;
   public TextAsset ResponseFile;
 
   public StreamingMicrophone Mic;
+  string m_connectionStatus;
 
   Queue<RealTimePredictionResult> m_streamingResults;
   Queue<string> m_wsMessage;
@@ -28,6 +31,7 @@ public class UIBinding : MonoBehaviour
   {
     m_streamingResults = new Queue<RealTimePredictionResult>();
     m_wsMessage = new Queue<string>();
+    m_connectionStatus = string.Empty;
 
     LoadResponses();
   }
@@ -47,9 +51,21 @@ public class UIBinding : MonoBehaviour
     ModelResult.text = result;
   }
 
-  public string [] GetPredictStatements()
+  public string[] GetPredictStatements()
   {
     return PredictStatements.text.Split('\n');
+  }
+
+  public void OnConnectionResult(StreamingServerStatus status)
+  {
+    if (status.type == "ready")
+    {
+      m_connectionStatus = "Ready";
+    }
+    else
+    {
+      m_connectionStatus = "Failed";
+    }
   }
 
   public void OnTextPredictResult(string result)
@@ -61,7 +77,7 @@ public class UIBinding : MonoBehaviour
     {
       foreach (var prediction in sentence.prediction)
       {
-        var s = string.Format("label: {0} ({1:0.00})\n", prediction.label, prediction.confidence);
+        var s = string.Format("label: {0} ({1:0.00})\n", prediction.label, prediction.prediction);
         response += s;
       }
     }
@@ -79,14 +95,14 @@ public class UIBinding : MonoBehaviour
     var response = string.Empty;
     foreach (var intent in rtPrediction.intents)
     {
-      var s = string.Format("label: {0} ({1:0.00})\n", intent.label, intent.confidence);
+      var s = string.Format("label: {0} ({1:0.00})\n", intent.label, intent.prediction);
       response += s;
     }
 
-    Hypothesis.text = rtPrediction.text;
+    Hypothesis.text = rtPrediction.transcript.text;
     if (rtPrediction.isFinal)
     {
-      var newMsg = string.Format("{0}\n(label:{1})\n\n", rtPrediction.text, rtPrediction.intents[0].label);
+      var newMsg = string.Format("{0}\n(label:{1})\n\n", rtPrediction.transcript.text, rtPrediction.intents[0].label);
       Recognition.text = newMsg + Recognition.text;
 
       foreach (var intentResponse in m_responses.intentResponses)
@@ -120,7 +136,7 @@ public class UIBinding : MonoBehaviour
 
   public void OnStreamingStarted()
   {
-    if(MicrophoneButton != null)
+    if (MicrophoneButton != null)
       MicrophoneButton.text = "Stop\nMicrophone";
     m_wsMessage.Enqueue("Streaming");
   }
@@ -139,9 +155,15 @@ public class UIBinding : MonoBehaviour
       OnRealtimeResult(m_streamingResults.Dequeue());
     }
 
-    if(m_wsMessage.Count > 0)
+    if (m_wsMessage.Count > 0)
     {
       WSStatus.text = m_wsMessage.Dequeue();
+    }
+
+    if (ConnectButton != null && ConnectButton.enabled && m_connectionStatus != string.Empty)
+    {
+      ConnectButton.enabled = false;
+      ConnectButtonText.text = m_connectionStatus;
     }
   }
 }

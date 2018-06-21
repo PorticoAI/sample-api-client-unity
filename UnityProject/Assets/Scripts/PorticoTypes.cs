@@ -58,10 +58,18 @@ namespace PorticoTypes
   }
 
   [Serializable]
+  public class Transcript
+  {
+    public string text;
+    public float confidence;
+    public float stability;
+  }
+
+  [Serializable]
   public class Intent
   {
     public string label;
-    public float confidence;
+    public float prediction;
   }
 
   [Serializable]
@@ -89,13 +97,25 @@ namespace PorticoTypes
     public string action;
   }
 
+
+  [Serializable]
+  public class ServerToClientMessage
+  {
+    public string type;
+  }
+
+  [Serializable]
+  public class StreamingServerStatus
+  {
+    public string type;
+    public string id;
+  }
+
   [Serializable]
   public class RealTimePredictionResult
   {
     public string type;
-    public string text;
-    public string transcriptConfidence;
-    public string transcriptStability;
+    public Transcript transcript;
     public bool isFinal;
     public Intent[] intents;
   }

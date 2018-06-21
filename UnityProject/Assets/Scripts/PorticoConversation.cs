@@ -9,9 +9,11 @@ using WebSocketSharp;
 
 public class PorticoConversation : MonoBehaviour
 {
+  public bool AutoConnect = true;
   public string MODEL_ID;
   public string MODEL_NAME;
   public string MY_TOKEN;
+  public string API_BASE = "api.porticotraining.com";
   public TextAsset TrainingFile;
   public UIBinding UIBinding;
 
@@ -24,7 +26,6 @@ public class PorticoConversation : MonoBehaviour
 
 
   WebSocket m_ws;
-  string API_BASE = "dev-train.porticotraining.com/api";
   Dictionary<string, string> m_headers;
   IntentResponses m_responses;
   STT_State m_sttState;
@@ -39,7 +40,8 @@ public class PorticoConversation : MonoBehaviour
 
     UIBinding.OnModelName(MODEL_NAME);
 
-    ConnectToStreamingServer();
+    if(AutoConnect)
+      ConnectToStreamingServer();
   }
   
   public void StartCreateModel()
@@ -167,9 +169,30 @@ public class PorticoConversation : MonoBehaviour
     };
 
     m_ws.OnMessage += (sender, e) => {
-      var rtPrediction = JsonUtility.FromJson<RealTimePredictionResult>(e.Data);
-      UIBinding.OnReceivedRealtimeResult(rtPrediction);
-      };
+      var message = JsonUtility.FromJson<ServerToClientMessage>(e.Data);
+      switch (message.type)
+      {
+        case "ready":
+          {
+            var streamingStatus = JsonUtility.FromJson<StreamingServerStatus>(e.Data);
+            UIBinding.OnConnectionResult(streamingStatus);
+          }
+          break;
+        case "failure":
+          {
+            var streamingStatus = JsonUtility.FromJson<StreamingServerStatus>(e.Data);
+            UIBinding.OnConnectionResult(streamingStatus);
+            Debug.LogErrorFormat("Server ({0}) not ready.", streamingStatus.id);
+          }
+          break;
+        case "intent":
+          {
+            var rtPrediction = JsonUtility.FromJson<RealTimePredictionResult>(e.Data);
+            UIBinding.OnReceivedRealtimeResult(rtPrediction);
+          }
+          break;
+      }
+    };
 
     m_ws.OnError += (sender, e) =>
     {
