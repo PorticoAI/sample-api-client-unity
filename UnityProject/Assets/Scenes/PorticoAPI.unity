@@ -4498,7 +4498,7 @@ MonoBehaviour:
   MODEL_ID: 
   MODEL_NAME: MyTestModel
   MY_TOKEN: 
-  API_BASE: dev-train.porticotraining.com/api
+  API_BASE: api.porticotraining.com
   TrainingFile: {fileID: 4900000, guid: 611fc13e1c90fb8428c155dd562810dd, type: 3}
   UIBinding: {fileID: 1430096172}
 --- !u!4 &1976859166
